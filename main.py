@@ -1,9 +1,11 @@
 import os
+import sys
 import time
 import keyboard
 
 movimentacoes = []
 saldo = 0
+count_saques = 0
 
 def limpar():
     os.system("cls" if os.name == "nt" else "clear")
@@ -11,9 +13,19 @@ def limpar():
 def printcenter(x):
     print(x.center(83))
 
+def sair():
+    tecla3 = keyboard.read_event(suppress=True).name
+
+    if tecla3 == "Q" or tecla3 == "q":
+        print("Saindo do tela de extratos...")
+        time.sleep(1)
+    else:
+        sair()
+
 def main():
     global saldo
     global movimentacoes
+    global count_saques
 
     while True:
 
@@ -57,32 +69,50 @@ def main():
             printcenter("Opção \"Depositar\" foi escolhida\n\n")
             deposito = float(input("Quanto deseja depositar? R$"))
             if deposito > 0:
+                printcenter(f"Depósito de R${deposito:.2f} realizado com sucesso!")
                 movimentacoes.append(f"Deposito: R$ {deposito:.2f}")
                 saldo += deposito
+                time.sleep(2)
+                continue
             else:
                 printcenter("Valor inválido. Tente novamente.")
                 time.sleep(.8)
                 continue    
-            break
+
 
         elif tecla == "2":
             printcenter("Opção \"Sacar\" foi escolhida\n\n")
 
             saque = float(input("Quanto deseja sacar? R$"))
+            if count_saques <= 3:
+                if saque > 0 and saque <= saldo:
+                    movimentacoes.append(f"Saque: R$ {saque:.2f}")
+                    saldo -= saque
+                    count_saques += 1
+                    printcenter(f"Saque realizado com sucesso!")
+                    printcenter("Seu saldo agpra é: R$ {saldo:.2f}")
+                    time.sleep(2)
+                    continue
 
-            if saque > 0 and saque <= saldo:
-                movimentacoes.append(f"Saque: R$ {saque:.2f}")
-                saldo -= saque
-                printcenter(f"Saque realizado com sucesso!\nSeu novo saldo é: R$ {saldo:.2f}")
-
+                else:
+                    print("Valor inválido. Tente novamente.")
+                    time.sleep(.8)
+                    continue
             else:
-                print("Valor inválido. Tente novamente.")
+                printcenter("Você atingiu o limite de 3 saques no dia.")
                 time.sleep(.8)
-            break
+                continue
 
         elif tecla == "3":
             printcenter("Opção \"Ver Extrato\" foi escolhida\n\n")
-            break
+            
+            for movimento in movimentacoes:
+                printcenter(movimento)
+                time.sleep(1.5)
+            
+            print("\n\nPressione a letra \"Q\" para sair da tela de extratos")
+            
+            sair()
 
         elif tecla == "0":
             printcenter("Saindo do PayBank...")
