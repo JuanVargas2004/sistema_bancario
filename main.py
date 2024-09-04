@@ -3,6 +3,7 @@ import time
 import keyboard
 
 movimentacoes = []
+saldo = 0
 
 def limpar():
     os.system("cls" if os.name == "nt" else "clear")
@@ -11,6 +12,8 @@ def printcenter(x):
     print(x.center(83))
 
 def main():
+    global saldo
+    global movimentacoes
 
     while True:
 
@@ -55,6 +58,7 @@ def main():
             deposito = float(input("Quanto deseja depositar? R$"))
             if deposito > 0:
                 movimentacoes.append(f"Deposito: R$ {deposito:.2f}")
+                saldo += deposito
             else:
                 printcenter("Valor inválido. Tente novamente.")
                 time.sleep(.8)
@@ -63,6 +67,17 @@ def main():
 
         elif tecla == "2":
             printcenter("Opção \"Sacar\" foi escolhida\n\n")
+
+            saque = float(input("Quanto deseja sacar? R$"))
+
+            if saque > 0 and saque <= saldo:
+                movimentacoes.append(f"Saque: R$ {saque:.2f}")
+                saldo -= saque
+                printcenter(f"Saque realizado com sucesso!\nSeu novo saldo é: R$ {saldo:.2f}")
+
+            else:
+                print("Valor inválido. Tente novamente.")
+                time.sleep(.8)
             break
 
         elif tecla == "3":
