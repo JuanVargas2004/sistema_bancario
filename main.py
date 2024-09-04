@@ -54,7 +54,7 @@ def main():
         — — — — — — — — — — — — — — —
         |   [1] - Depositar         |
         |   [2] - Sacar             |
-        |   [3] -  Ver Extrato      |
+        |   [3] - Ver Extrato       |
         |   [0] - Sair do PayBank   |
         — — — — — — — — — — — — — — —
         '''
@@ -70,7 +70,7 @@ def main():
             deposito = float(input("Quanto deseja depositar? R$"))
             if deposito > 0:
                 printcenter(f"Depósito de R${deposito:.2f} realizado com sucesso!")
-                movimentacoes.append(f"Deposito: R$ {deposito:.2f}")
+                movimentacoes.append(f"Depósito: R$ {deposito:.2f}")
                 saldo += deposito
                 time.sleep(2)
                 continue
@@ -84,13 +84,13 @@ def main():
             printcenter("Opção \"Sacar\" foi escolhida\n\n")
 
             saque = float(input("Quanto deseja sacar? R$"))
-            if count_saques <= 3:
+            if count_saques < 3:
                 if saque > 0 and saque <= saldo:
                     movimentacoes.append(f"Saque: R$ {saque:.2f}")
                     saldo -= saque
                     count_saques += 1
                     printcenter(f"Saque realizado com sucesso!")
-                    printcenter("Seu saldo agpra é: R$ {saldo:.2f}")
+                    printcenter(f"Seu saldo agpra é: R$ {saldo:.2f}")
                     time.sleep(2)
                     continue
 
@@ -106,10 +106,12 @@ def main():
         elif tecla == "3":
             printcenter("Opção \"Ver Extrato\" foi escolhida\n\n")
             
+            print(("#" * 25).center(83))
             for movimento in movimentacoes:
                 printcenter(movimento)
-                time.sleep(1.5)
+            print(("#" * 25).center(83))
             
+            time.sleep(1.5)
             print("\n\nPressione a letra \"Q\" para sair da tela de extratos")
             
             sair()
